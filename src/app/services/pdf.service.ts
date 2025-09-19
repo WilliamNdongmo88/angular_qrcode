@@ -7,8 +7,8 @@ import { PdfUploadResponse, PdfMetadata } from '../interfaces/pdf.interface';
   providedIn: 'root'
 })
 export class PdfService {
-  //private apiUrl = 'http://localhost:8070/api/pdf';
-  private apiUrl = 'https://artisan-des-saveurs-production.up.railway.app/api/pdf';
+  private apiUrl = 'http://localhost:8071/api/pdf';
+  //private apiUrl = 'https://artisan-des-saveurs-production.up.railway.app/api/pdf';
 
   constructor(private http: HttpClient) { }
 

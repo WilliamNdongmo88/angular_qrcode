@@ -7,8 +7,8 @@ import { QrCodeGenerationResponse, QrCodeMetadata } from '../interfaces/qrcode.i
   providedIn: 'root'
 })
 export class QrcodeService {
-  //private apiUrl = 'http://localhost:8070/api/qrcode';
-  private apiUrl = 'https://artisan-des-saveurs-production.up.railway.app/api/qrcode';
+  private apiUrl = 'http://localhost:8071/api/qrcode';
+  //private apiUrl = 'https://artisan-des-saveurs-production.up.railway.app/api/qrcode';
 
   constructor(private http: HttpClient) { }
 
