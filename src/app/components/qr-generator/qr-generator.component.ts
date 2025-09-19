@@ -115,6 +115,7 @@ export class QrGeneratorComponent {
 
   downloadQrCode(): void {
     if (this.generatedQrCode) {
+      console.log("generated QR Code URL: ", this.generatedQrCode.downloadUrl);
       window.open(this.generatedQrCode.downloadUrl, '_blank');
     }
   }
