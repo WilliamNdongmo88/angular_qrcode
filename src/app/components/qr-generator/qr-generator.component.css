@@ -1,0 +1,313 @@
+.qr-generator-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+}
+
+.header p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.messages {
+  margin-bottom: 30px;
+}
+
+.alert {
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.alert-error {
+  background-color: #fee;
+  color: #c53030;
+  border: 1px solid #feb2b2;
+}
+
+.alert-success {
+  background-color: #f0fff4;
+  color: #38a169;
+  border: 1px solid #9ae6b4;
+}
+
+.upload-section {
+  background: #f8f9fa;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border: 2px dashed #dee2e6;
+}
+
+.upload-section h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.file-input-container {
+  margin-bottom: 20px;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-label {
+  display: inline-block;
+  padding: 15px 25px;
+  background: #fff;
+  border: 2px solid #3498db;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #3498db;
+  font-weight: 500;
+  min-width: 200px;
+  text-align: center;
+}
+
+.file-label:hover {
+  background: #3498db;
+  color: white;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #3498db;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #2980b9;
+}
+
+.btn-secondary {
+  background: #95a5a6;
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #7f8c8d;
+}
+
+.btn-success {
+  background: #27ae60;
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: #229954;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #3498db;
+  border: 2px solid #3498db;
+}
+
+.btn-outline:hover {
+  background: #3498db;
+  color: white;
+}
+
+.pdf-info {
+  background: #e8f5e8;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border-left: 5px solid #27ae60;
+}
+
+.pdf-info h3 {
+  color: #27ae60;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.info-item {
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.info-item strong {
+  color: #2c3e50;
+}
+
+.qr-generation-section {
+  background: #fff3cd;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border-left: 5px solid #f39c12;
+}
+
+.qr-generation-section h2 {
+  color: #e67e22;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+
+.qr-generation-section p {
+  color: #8b4513;
+  margin-bottom: 20px;
+}
+
+.qr-result {
+  background: #e3f2fd;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border-left: 5px solid #2196f3;
+  text-align: center;
+}
+
+.qr-result h3 {
+  color: #1976d2;
+  margin-bottom: 25px;
+  font-size: 1.4rem;
+}
+
+.qr-display {
+  margin-bottom: 25px;
+}
+
+.qr-image {
+  max-width: 300px;
+  height: auto;
+  border: 3px solid #2196f3;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.qr-info {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.qr-info p {
+  margin-bottom: 10px;
+  word-break: break-all;
+}
+
+.qr-actions {
+  margin-top: 20px;
+}
+
+.global-actions {
+  text-align: center;
+  padding: 30px 0;
+  border-top: 1px solid #dee2e6;
+}
+
+@media (max-width: 768px) {
+  .qr-generator-container {
+    padding: 15px;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .upload-section,
+  .pdf-info,
+  .qr-generation-section,
+  .qr-result {
+    padding: 20px;
+  }
+  
+  .qr-image {
+    max-width: 250px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+
+/* Styles pour la section logo */
+.logo-section {
+  background: #f0f8ff;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border-left: 5px solid #6c5ce7;
+}
+
+.logo-section h2 {
+  color: #6c5ce7;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+
+.logo-section p {
+  color: #74b9ff;
+  margin-bottom: 20px;
+}
+
+.logo-input-container {
+  margin-bottom: 20px;
+}
+
+.logo-preview {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.logo-preview h4 {
+  color: #6c5ce7;
+  margin-bottom: 15px;
+}
+
+.logo-preview-image {
+  max-width: 150px;
+  max-height: 150px;
+  border: 2px solid #6c5ce7;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  object-fit: contain;
+}
+
+.btn-small {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+

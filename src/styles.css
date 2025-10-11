@@ -1,0 +1,472 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'ngx-toastr/toastr';
+
+/* styles.scss ou styles.css */
+
+/* Supprime les icônes par défaut de ngx-toastr (car nous allons utiliser les nôtres) */
+.toast-success, .toast-error, .toast-info, .toast-warning {
+  background-image: none !important;
+}
+
+/* Conteneur principal des toasts */
+.toast-container .ngx-toastr {
+  background: #fff !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 12px !important;
+  padding: 1rem 1.5rem !important;
+  width: 100% !important; /* Assure que le toast prend la largeur du conteneur */
+  border-left: 5px solid transparent; /* Bordure de base */
+  overflow: hidden; /* Pour que la bordure arrondie fonctionne bien */
+  opacity: 1 !important;
+}
+
+/* Style pour les toasts d'erreur (basé sur votre image) */
+.toast-container .toast-error {
+  border-left-color: #dc3545 !important; /* Rouge pour l'erreur */
+}
+
+/* Style pour les toasts de succès */
+.toast-container .toast-success {
+  border-left-color: #28a745 !important; /* Vert pour le succès */
+}
+
+/* Conteneur du message pour utiliser flexbox */
+.toast-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Espace entre l'icône et le texte */
+  padding: 0 !important;
+  margin-top: -2rem;
+  margin-right: 0px;
+  color: #333 !important;
+  font-weight: 500 !important;
+}
+
+/* Ajout de l'icône via un pseudo-élément ::before */
+.toast-message::before {
+  content: '';
+  display: inline-block;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+/* Icône pour les toasts d'erreur */
+.toast-error .toast-message::before {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>' );
+}
+
+/* Icône pour les toasts de succès */
+.toast-success .toast-message::before {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2328a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>' );
+}
+
+
+/* Bouton de fermeture */
+.toast-close-button {
+  position: absolute;
+  top: 2px;
+  right: 15px;
+  background: transparent !important;
+  border: none !important;
+  color: #666 !important;
+  font-size: 24px !important;
+  font-weight: 300 !important;
+  line-height: 1;
+  opacity: 0.8 !important;
+  text-shadow: none !important;
+  transition: color 0.3s ease;
+}
+
+.toast-close-button:hover {
+  color: #000 !important;
+}
+
+/* Animation d'entrée */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.toast-container .ngx-toastr {
+  animation: slideInRight 0.4s ease-out;
+}
+
+@media (min-width: 241px) and (max-width: 480px) {
+    .toast-container .toast-close-button {
+        right: 15px;
+        top: 2px;
+    }
+}
+
+/* Styles globaux basés sur le logo SSAC */
+:root {
+  --primary-green: #3aaa35;
+  --primary-blue: #022851;
+  --white: #ffffff;
+  --light-gray: #f8f9fa;
+  --medium-gray: #6c757d;
+  --dark-gray: #343a40;
+  --success: #28a745;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --info: #17a2b8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+  line-height: 1.6;
+}
+
+/* Styles pour les boutons */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary-green);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background-color: #2e8a2a;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: var(--primary-blue);
+  color: var(--white);
+}
+
+.btn-secondary:hover {
+  background-color: #011a3a;
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background-color: var(--danger);
+  color: var(--white);
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+}
+
+.btn-warning {
+  background-color: var(--warning);
+  color: var(--dark-gray);
+}
+
+.btn-warning:hover {
+  background-color: #e0a800;
+  transform: translateY(-2px);
+}
+
+/* Styles pour les formulaires */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: var(--primary-blue);
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e9ecef;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(58, 170, 53, 0.1);
+}
+
+/* Styles pour les cartes */
+.card {
+  background-color: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  border-bottom: 2px solid var(--primary-green);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  color: var(--primary-blue);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Styles pour la navigation */
+.navbar {
+  background-color: var(--white);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px 0;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-blue);
+  text-decoration: none;
+}
+
+.navbar-brand img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.nav-link {
+  color: var(--medium-gray);
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--primary-green);
+  background-color: rgba(58, 170, 53, 0.1);
+}
+
+.nav-link.active {
+  color: var(--primary-green);
+  background-color: rgba(58, 170, 53, 0.1);
+}
+
+/* Styles pour les tableaux */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--white);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+  background-color: var(--primary-blue);
+  color: var(--white);
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.table td {
+  padding: 15px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.table tr:hover {
+  background-color: rgba(58, 170, 53, 0.05);
+}
+
+/* Styles pour les alertes */
+.alert {
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border-left: 4px solid;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  border-color: var(--success);
+  color: #155724;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border-color: var(--danger);
+  color: #721c24;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  border-color: var(--warning);
+  color: #856404;
+}
+
+.alert-info {
+  background-color: #d1ecf1;
+  border-color: var(--info);
+  color: #0c5460;
+}
+
+/* Styles pour les badges */
+.badge {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.badge-success {
+  background-color: var(--success);
+  color: var(--white);
+}
+
+.badge-danger {
+  background-color: var(--danger);
+  color: var(--white);
+}
+
+.badge-warning {
+  background-color: var(--warning);
+  color: var(--dark-gray);
+}
+
+.badge-primary {
+  background-color: var(--primary-green);
+  color: var(--white);
+}
+
+.badge-secondary {
+  background-color: var(--primary-blue);
+  color: var(--white);
+}
+
+/* Utilitaires */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-primary {
+  color: var(--primary-green);
+}
+
+.text-secondary {
+  color: var(--primary-blue);
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 1rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+  
+  .card {
+    padding: 15px;
+  }
+  
+  .table {
+    font-size: 14px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 10px;
+  }
+}
