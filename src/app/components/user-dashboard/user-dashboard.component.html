@@ -1,0 +1,344 @@
+<div class="user-dashboard">
+  <!-- Header -->
+  <app-header *ngIf="!isOriginalPage"></app-header>
+
+  <div class="container mt-4">
+    <!-- Messages -->
+    <div class="alert alert-success" *ngIf="successMessage">
+      {{ successMessage }}
+    </div>
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Onglets -->
+    <div class="tabs-container mb-4">
+      <button 
+        class="tab-button" 
+        [class.active]="currentTab === 'qrcodes'"
+        (click)="setCurrentTab('qrcodes')"
+      >
+        Mes QR Codes
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="currentTab === 'profile'"
+        (click)="setCurrentTab('profile')"
+      >
+        Mon Profil
+      </button>
+      <button 
+        class="tab-button" 
+        [class.active]="currentTab === 'actions'"
+        (click)="setCurrentTab('actions')"
+      >
+        Mon Historique
+      </button>
+      <button *ngIf="isOriginalPage"
+        class="tab-button" 
+        [class.active]="currentTab === ''"
+      (click)="changeTemplate()">Back</button>
+    </div>
+
+    <!-- Onglet QR Codes -->
+    <div *ngIf="currentTab === 'qrcodes'" class="fade-in">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2 class="card-title">Mes QR Codes</h2>
+          <div class="d-flex gap-2">
+            <button 
+              class="btn btn-success" 
+              (click)="goToQrGenerator()"
+            >
+              Générateur de QR Codes
+            </button>
+            <button 
+              class="btn btn-primary" 
+              (click)="showQrForm = !showQrForm"
+            >
+              Générer un QR Code
+            </button>
+          </div>
+        </div>
+
+        <!-- Formulaire de génération de QR code -->
+        <div *ngIf="showQrForm" class="qr-form mb-4">
+          <h3>Générer un Nouveau QR Code</h3>
+          <div class="form-group">
+            <label class="form-label">Contenu du QR Code</label>
+            <textarea 
+              class="form-control" 
+              [(ngModel)]="qrContent"
+              placeholder="Entrez le contenu à encoder dans le QR code (URL, texte, etc.)"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary" (click)="generateQrCode()" [disabled]="isLoading">
+              <span *ngIf="isLoading">Génération...</span>
+              <span *ngIf="!isLoading">Générer</span>
+            </button>
+            <button class="btn btn-secondary" (click)="resetQrForm()">
+              Annuler
+            </button>
+          </div>
+        </div>
+
+        <!-- Liste des QR codes -->
+        <div class="qr-codes-grid">
+          <div *ngFor="let qrCode of qrCodes" class="qr-code-card">
+            <div class="qr-code-header">
+                <div class="qr-display">
+                  <img 
+                    [src]="getQrCodeImageUrl()" 
+                    alt="QR Code généré"
+                    class="qr-image"
+                  />
+                </div>
+              <span class="date"><strong>Créé le:</strong>{{ qrCode.generationDate | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <div class="qr-code-content">
+              <p><strong>Contenu:</strong> {{ qrCode.qrContent | slice:0:100 }}{{ qrCode.qrContent.length > 100 ? '...' : '' }}</p>
+            </div>
+            <div class="qr-code-actions">
+              <button class="btn btn-primary" (click)="downloadQrCode()">
+                Télécharger
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="qrCodes.length === 0" class="text-center mt-4">
+          <p>Aucun QR code généré pour le moment.</p>
+          <!-- (click)="showQrForm = true" -->
+          <button class="btn btn-primary" (click)="goToQrGenerator()">
+            Générer votre premier QR Code
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Onglet Profil -->
+    <div *ngIf="currentTab === 'profile'" class="fade-in">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2 class="card-title">Mon Profil</h2>
+            <button 
+              *ngIf="showProfileForm && isResetPass"
+              class="btn btn-secondary" 
+              (click)="changePassword()"
+            >
+              Réinitialiser le mot de passe
+            </button>
+            <button 
+              *ngIf="showProfileData"
+              class="btn btn-primary" 
+              (click)="changeProfileForm()"
+            >
+              Modifier
+            </button>
+        </div>
+
+        <!-- Informations du profil -->
+        <div *ngIf="showProfileData && user" class="profile-info">
+          <div class="info-row">
+            <label>Nom:</label>
+            <span>{{ user.nom }}</span>
+          </div>
+          <div class="info-row">
+            <label>Email:</label>
+            <span>{{ user.email }}</span>
+          </div>
+          <div class="info-row">
+            <label>Code d'accès:</label>
+            <span class="code-access">{{ user.codeAcces }}</span>
+          </div>
+          <div class="info-row">
+            <label>Rôle:</label>
+            <span class="badge badge-primary">{{ user.role }}</span>
+          </div>
+          <div class="info-row">
+            <label>Statut:</label>
+            <span class="badge" [class]="user.actif ? 'badge-success' : 'badge-danger'">
+              {{ user.actif ? 'Actif' : 'Inactif' }}
+            </span>
+          </div>
+          <div class="info-row">
+            <label>Membre depuis:</label>
+            <span>{{ user.dateCreation | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+
+        <!-- Formulaire de modification du profil -->
+        <div *ngIf="showProfileForm" class="profile-form">
+          <h3>Modifier Mon Profil</h3>
+          <div class="form-group">
+            <label class="form-label">Nom</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="profileForm.nom"
+              placeholder="Votre nom complet"
+            >
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input 
+              type="email" 
+              class="form-control" 
+              [(ngModel)]="profileForm.email"
+              placeholder="Votre adresse email"
+              disabled="true"
+            >
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary" (click)="updateProfile()" [disabled]="isLoading">
+              <span *ngIf="isLoading">Mise à jour...</span>
+              <span *ngIf="!isLoading">Sauvegarder</span>
+            </button>
+            <button class="btn btn-secondary" (click)="resetProfileForm()">
+              Annuler
+            </button>
+          </div>
+        </div>
+
+        <!-- Formulaire de réinitialisation du mot de passe -->
+        <div *ngIf="isResetPassword" class="profile-form">
+          <h3>Modifier votre mot de passe</h3>
+          <!-- Mot de passe actuel -->
+          <div class="form-group mt-4">
+            <label class="form-label">Mot de passe actuel</label>
+            <input
+              type="text"
+              name="currentPassword"
+              class="form-control"
+              [(ngModel)]="passwordForm.currentPassword"
+              required
+              minlength="6"
+              #currentPassword="ngModel"
+              placeholder="Votre mot de passe actuel"
+            >
+            <div *ngIf="currentPassword.invalid && currentPassword.touched" class="text-danger">
+              <small *ngIf="currentPassword.errors?.['required']">
+                Le mot de passe actuel est requis.
+              </small>
+              <small *ngIf="currentPassword.errors?.['minlength']">
+                Le mot de passe doit contenir au moins 6 caractères.
+              </small>
+            </div>
+          </div>
+
+          <!-- Nouveau mot de passe -->
+          <div class="form-group mt-3">
+            <label class="form-label">Nouveau mot de passe</label>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              name="newPassword"
+              class="form-control"
+              [(ngModel)]="passwordForm.newPassword"
+              required
+              minlength="6"
+              #newPassword="ngModel"
+              placeholder="Votre nouveau mot de passe"
+            >
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary" (click)="showPassword = !showPassword" tabindex="-1">
+                <i [class]="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+              </button>
+            </div>
+            <div *ngIf="newPassword.invalid && newPassword.touched" class="text-danger">
+              <small *ngIf="newPassword.errors?.['required']">
+                Le nouveau mot de passe est requis.
+              </small>
+              <small *ngIf="newPassword.errors?.['minlength']">
+                Le mot de passe doit contenir au moins 6 caractères.
+              </small>
+            </div>
+          </div>
+
+          <!-- Confirmation du mot de passe -->
+          <div class="form-group mt-3">
+            <label class="form-label">Confirmez le nouveau mot de passe</label>
+            <input
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              name="newPasswordConfirm"
+              class="form-control"
+              [(ngModel)]="passwordForm.newPasswordConfirm"
+              required
+              #newPasswordConfirm="ngModel"
+              placeholder="Confirmez votre nouveau mot de passe"
+            >
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary" (click)="showConfirmPassword = !showConfirmPassword" tabindex="-1">
+                <i [class]="showConfirmPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+              </button>
+            </div>
+            <div *ngIf="newPasswordConfirm.invalid && newPasswordConfirm.touched" class="text-danger">
+              <small *ngIf="newPasswordConfirm.errors?.['required']">
+                La confirmation du mot de passe est requise.
+              </small>
+            </div>
+
+            <!-- Vérification de correspondance -->
+            <div *ngIf="passwordForm.newPassword && passwordForm.newPasswordConfirm &&
+                        passwordForm.newPassword !== passwordForm.newPasswordConfirm" class="text-danger">
+              <small>Les deux mots de passe ne correspondent pas.</small>
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary" (click)="updatePassword()" [disabled]="isLoading">
+              <span *ngIf="isLoading">Mise à jour...</span>
+              <span *ngIf="!isLoading">Mettre à jour le mot de passe</span>
+            </button>
+            <button class="btn btn-secondary" (click)="resetPasswordForm()">
+              Annuler
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Onglet Historique -->
+    <div *ngIf="currentTab === 'actions'" class="fade-in">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Mon Historique d'Actions</h2>
+        </div>
+
+        <!-- Tableau des actions -->
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Type d'action</th>
+                <th>Description</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let action of actions">
+                <td>
+                  <span class="badge" [class]="getActionBadgeClass(action.typeAction)">
+                    {{ action.typeAction }}
+                  </span>
+                </td>
+                <td>{{ action.description }}</td>
+                <td>{{ action.dateAction | date:'dd/MM/yyyy HH:mm' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="actions.length === 0" class="text-center mt-4">
+          <p>Aucune action enregistrée pour le moment.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Indicateur de chargement -->
+    <div *ngIf="isLoading" class="text-center mt-4">
+      <p>Chargement en cours...</p>
+    </div>
+  </div>
+</div>
+

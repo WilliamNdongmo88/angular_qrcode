@@ -1,0 +1,93 @@
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-blue) 100%);
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--white);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.subtitle {
+  color: var(--medium-gray);
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.btn-full {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.login-footer {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+}
+
+.login-footer p {
+  margin-bottom: 15px;
+  color: var(--medium-gray);
+  font-size: 14px;
+}
+
+.login-footer .btn {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form-text {
+  color: var(--medium-gray);
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Animation pour le chargement */
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Style spécial pour le code d'accès */
+#codeAcces {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 10px;
+  }
+  
+  .login-card {
+    padding: 20px;
+  }
+  
+  .logo {
+    width: 60px;
+    height: 60px;
+  }
+}
+

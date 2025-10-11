@@ -1,0 +1,200 @@
+<div class="home-page">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="navbar-brand">
+          <img src="img/logo/logo-ssac.jpg" alt="Logo SSAC">
+          SSAC QR Code
+        </div>
+        
+        <div class="nav-menu">
+          <div *ngIf="!isAuthenticatedAndConnected()" class="nav-links">
+            <button class="nav-link" (click)="navigateToUserLogin()">
+              Connexion Utilisateur
+            </button>
+            <button class="nav-link" (click)="navigateToAdminLogin()">
+              Administration
+            </button>
+          </div>
+          
+          <div *ngIf="isAuthenticatedAndConnected()" class="nav-links">
+            <span class="welcome-text">Bonjour, {{ getUserName() }}</span>
+            <button *ngIf="isUser()" class="nav-link" (click)="navigateToUserDashboard()">
+              Mon Espace
+            </button>
+            <button *ngIf="isAdminOrManager()" class="nav-link" (click)="navigateToAdminDashboard()">
+              Administration
+            </button>
+            <button class="btn btn-danger" (click)="logout()">
+              Déconnexion
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1 class="hero-title">
+            Générateur de QR Codes
+            <span class="highlight">SSAC</span>
+          </h1>
+          <p class="hero-subtitle">
+            Solution professionnelle pour la génération et la gestion de QR codes.
+            Créez, gérez et partagez vos QR codes en toute simplicité.
+          </p>
+          
+          <div class="hero-actions">
+            <div *ngIf="!isAuthenticatedAndConnected()">
+              <button class="btn btn-primary btn-large" (click)="navigateToUserLogin()">
+                Commencer maintenant
+              </button>
+              <button class="btn btn-secondary btn-large" (click)="navigateToAdminLogin()">
+                Espace Administration
+              </button>
+            </div>
+            
+            <div *ngIf="isAuthenticatedAndConnected()">
+              <button class="btn btn-primary btn-large" (click)="navigateToQrGenerator()">
+                Générateur de QR Codes
+              </button>
+              <button *ngIf="isUser()" class="btn btn-success btn-large" (click)="navigateToUserDashboard()">
+                Mon Espace Personnel
+              </button>
+              <button *ngIf="isAdminOrManager()" class="btn btn-secondary btn-large" (click)="navigateToAdminDashboard()">
+                Interface d'administration
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="hero-image">
+          <div class="qr-demo">
+            <div class="qr-placeholder">
+              <div class="qr-pattern">
+                <div class="qr-square"></div>
+                <div class="qr-square"></div>
+                <div class="qr-square"></div>
+                <div class="qr-square"></div>
+                <div class="qr-square"></div>
+                <div class="qr-square"></div>
+                <div class="qr-square"></div>
+                <div class="qr-square"></div>
+                <div class="qr-square"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="container">
+      <h2 class="section-title">Fonctionnalités</h2>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>Génération Rapide</h3>
+          <p>Créez des QR codes personnalisés en quelques clics. Supportez différents types de contenu : URLs, texte, contacts, etc.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">👥</div>
+          <h3>Gestion des Utilisateurs</h3>
+          <p>Interface d'administration complète pour gérer les utilisateurs, leurs rôles et leurs permissions.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">📧</div>
+          <h3>Envoi par Email</h3>
+          <p>Recevez automatiquement vos QR codes par email avec des templates professionnels.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Suivi des Actions</h3>
+          <p>Historique complet de toutes les actions effectuées par les utilisateurs pour un suivi optimal.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Sécurité</h3>
+          <p>Authentification sécurisée avec gestion des rôles et des permissions granulaires.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">💾</div>
+          <h3>Sauvegarde</h3>
+          <p>Tous vos QR codes sont sauvegardés et accessibles depuis votre espace personnel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section">
+    <div class="container">
+      <div class="about-content">
+        <div class="about-text">
+          <h2>À propos de SSAC</h2>
+          <p>
+            SSAC (Sol Solution Afrique Centrale) propose des solutions technologiques innovantes 
+            pour l'Afrique Centrale. Notre application de génération de QR codes s'inscrit dans 
+            cette démarche d'innovation et de digitalisation.
+          </p>
+          <p>
+            Avec une interface intuitive et des fonctionnalités avancées, notre plateforme 
+            répond aux besoins des entreprises et des particuliers pour la création et la 
+            gestion de QR codes professionnels.
+          </p>
+        </div>
+        
+        <div class="about-logo">
+          <img src="img/logo/logo-ssac.jpg" alt="Logo SSAC" class="large-logo">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-brand">
+            <img src="img/logo/logo-ssac.jpg" alt="Logo SSAC">
+            <span>SSAC QR Code</span>
+          </div>
+          <p>Solution professionnelle de génération de QR codes pour l'Afrique Centrale.</p>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Liens Rapides</h4>
+          <ul>
+            <li><a href="#" (click)="navigateToUserLogin()">Connexion</a></li>
+            <li><a href="#" (click)="navigateToAdminLogin()">Administration</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>Email: contactssaccom</p>
+          <p>Téléphone: +237 XXX XXX XXX</p>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 SSAC - Sol Solution Afrique Centrale. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
