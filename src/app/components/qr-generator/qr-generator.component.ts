@@ -8,11 +8,13 @@ import { PdfUploadResponse } from '../../interfaces/pdf.interface';
 import { PdfService } from '../../services/pdf.service';
 import { QrCodeGenerationResponse } from '../../interfaces/qrcode.interface';
 import { HeaderComponent } from "../header/header";
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { SpinnerComponent } from "../spinner/spinner";
 
 @Component({
   selector: 'app-qr-generator',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, SpinnerComponent],
   templateUrl: './qr-generator.component.html',
   styleUrl: './qr-generator.component.css'
 })
@@ -20,6 +22,7 @@ export class QrGeneratorComponent implements OnInit {
   selectedFile: File | null = null;
   selectedLogo: File | null = null;
   logoPreviewUrl: string = '';
+  viewPdfUrl!: SafeResourceUrl;
   userPdfs: PdfMetadata[] = [];
   isUploading: boolean = false;
   isGenerating: boolean = false;
@@ -34,12 +37,15 @@ export class QrGeneratorComponent implements OnInit {
   isLogoOn = false;
   isQrcodeOff = false;
   isQrcodeOn = false;
+  isIframOn = false;
+  isLoading = false;
 
   constructor(
     private qrCodeService: QrCodeService,
     private authService: AuthService,
     private pdfService: PdfService,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
@@ -109,6 +115,7 @@ export class QrGeneratorComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true;
     this.isUploading = true;
     this.errorMessage = '';
     this.successMessage = '';
@@ -133,6 +140,7 @@ export class QrGeneratorComponent implements OnInit {
         if (fileInput) {
           fileInput.value = '';
         }
+        this.isLoading = false;
       },
       error: (error) => {
         this.isUploading = false;
@@ -153,6 +161,7 @@ export class QrGeneratorComponent implements OnInit {
             this.errorMessage = '';
           }, 5000);
         }
+        this.isLoading = false;
       }
     });
   }
@@ -204,13 +213,21 @@ export class QrGeneratorComponent implements OnInit {
   viewPdf(uniqueId: string) {
     console.log('Unique ID du PDF:', uniqueId);
     const url = this.qrCodeService.getPdfViewUrl(uniqueId);
+    this.viewPdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     console.log("Url :: ", url);
-    window.open(url, '_blank');
+    //window.open(url, '_blank');
+    this.isUploadPdfOn = false;
+    this.isIframOn = true;
+  }
+  hiddenPdf(){
+    this.isUploadPdfOn = true;
+    this.isIframOn = false;
   }
 
   nextTab(): void {
     this.isUploadPdfOn = false;
     this.isQrcodeOff = true;
+    this.isIframOn = false
   }
 
   nextGenerateQrCodeTab(): void {

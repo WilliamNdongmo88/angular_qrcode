@@ -339,12 +339,15 @@ openModal(userId?: number, message?: string, qrcodeId?: number) {
     console.log("this.selectedQrcodeId :: ", this.selectedQrcodeId);
     if (confirmed && this.selectedUserId) {
       if(this.modalMessage.includes('désactiver') || this.modalMessage.includes('activer')) {
+        console.log("----toggleUserStatus----");
         this.toggleUserStatus(this.selectedUserId);
       }else{
+        console.log("----resetUserCode----");
         this.resetUserCode(this.selectedUserId);
       }
       this.selectedUserId = null;
     }else if (confirmed && this.selectedQrcodeId) {
+      console.log("----deleteQrCode----");
       this.deleteQrCode(this.selectedQrcodeId);
     }
     this.isModalVisible = false;

@@ -365,9 +365,10 @@ export class AuthService {
     return this.http.get<UserActionDto[]>(`${this.apiUrl}/admin/actions`, { headers });
   }
 
-  deleteQrCode(uniqueId: number): Observable<number> {
+  deleteQrCode(qrCodeId: number): Observable<number> {
     const headers = this.getAuthHeaders();
-    return this.http.delete<number>(`${this.apiUrl}/admin/qrcodes/${uniqueId}`, { headers });
+    console.log('apiUrl : ', `${this.apiUrl}/admin/qrcodes/${qrCodeId}`);
+    return this.http.delete<number>(`${this.apiUrl}/admin/qrcodes/${qrCodeId}`, { headers });
   }
 
   getAllQrCodes(): Observable<any[]> {

@@ -63,6 +63,21 @@
     </button>
   </div>
 
+  <div *ngIf="isIframOn && !isUploadPdfOn" class="pdf-viewer-container">
+    <div class="pdf-frame">
+      <iframe [src]="viewPdfUrl"></iframe>
+    </div>
+
+    <div class="pdf-actions">
+      <button (click)="hiddenPdf()" class="btn btn-secondary">
+        Cacher le PDF
+      </button>
+      <button (click)="nextTab()" class="btn btn-secondary">
+        Suivant
+      </button>
+    </div>
+  </div>
+
   <!-- Section de sélection de logo -->
   <div *ngIf="uploadedPdf && isLogoOff" class="logo-section">
     <h2>2. Logo personnalisé (optionnel)</h2>
@@ -140,4 +155,6 @@
       Recommencer
     </button>
   </div>
+
+  <app-spinner [visible]="isLoading"></app-spinner>
 </div>
