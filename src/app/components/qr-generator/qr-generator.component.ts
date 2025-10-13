@@ -145,17 +145,17 @@ export class QrGeneratorComponent implements OnInit {
       error: (error) => {
         this.isUploading = false;
         if (error.error && error.error.error) {
-          console.error("❌ Erreur backend :", error.error.error);
+          console.error("Erreur backend :", error.error.error);
           this.errorMessage = error.error.error;
           setTimeout(() => {
             this.errorMessage = '';
           }, 5000);
         } else {
-          console.error("❌ Erreur inconnue :", error);
+          console.error("Erreur inconnue :", error);
            if (error.error && error.error.message) {
             this.errorMessage = error.error.message;
           } else {
-            this.errorMessage = "❌ Une erreur inattendue est survenue.";
+            this.errorMessage = error.error;
           }
           setTimeout(() => {
             this.errorMessage = '';
