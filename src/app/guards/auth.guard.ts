@@ -44,7 +44,7 @@ export class AuthGuard implements CanActivate {
           }
         } else {
           console.log('AuthGuard: Non authentifié, redirection vers /user-login.');
-          this.router.navigate(['/user-login']);
+          this.router.navigate(['/home']);
           localStorage.removeItem("authToken");
           localStorage.removeItem("refreshToken");
           return false;
@@ -52,7 +52,7 @@ export class AuthGuard implements CanActivate {
       }),
       catchError(() => {
         console.log('AuthGuard: Erreur d\'authentification, redirection vers /user-login.');
-        this.router.navigate(['/user-login']);
+        this.router.navigate(['/home']);
         return of(false);
       })
     );

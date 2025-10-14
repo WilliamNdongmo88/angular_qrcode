@@ -26,7 +26,7 @@ export class AdminGuard implements CanActivate {
           return true;
         } else {
           console.log('AdminGuard: Non authentifié ou pas Admin/Manager, redirection vers /admin-login');
-          this.router.navigate(['/admin-login']);
+          this.router.navigate(['/home']);
           localStorage.removeItem("authToken");
           localStorage.removeItem("refreshToken");
           return false;
@@ -34,7 +34,7 @@ export class AdminGuard implements CanActivate {
       }),
       catchError(() => {
         console.log('AdminGuard: Erreur d\'authentification, redirection vers /admin-login');
-        this.router.navigate(['/admin-login']);
+        this.router.navigate(['/home']);
         localStorage.removeItem("authToken");
         localStorage.removeItem("refreshToken");
         return of(false);
