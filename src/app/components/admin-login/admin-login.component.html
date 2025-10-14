@@ -19,25 +19,44 @@
           required
           placeholder="Entrez votre email"
           [disabled]="isLoading"
+          #emailInput="ngModel"
         >
+        <div *ngIf="emailInput.invalid && emailInput.touched" class="text-danger">
+          Veuillez entrer une adresse email valide.
+        </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group position-relative">
         <label for="password" class="form-label">Mot de passe</label>
-        <input
-          [type]="showPassword ? 'text' : 'password'"
-          id="password"
-          name="password"
-          class="form-control"
-          [(ngModel)]="password"
-          required
-          placeholder="Entrez votre mot de passe"
-          [disabled]="isLoading"
-        >
-        <div class="input-group-append">
-          <button type="button" class="btn btn-outline-secondary" (click)="showPassword = !showPassword" tabindex="-1">
-            <i [class]="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
-          </button>
+        <div class="input-group">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            name="password"
+            class="form-control"
+            [(ngModel)]="password"
+            required
+            placeholder="Entrez votre mot de passe"
+            [disabled]="isLoading"
+            pattern="^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?\:{}|<>])(?=.*\d).{8,}$"
+            #passwordInput="ngModel"
+          >
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary" (click)="showPassword = !showPassword" tabindex="-1">
+              <i [class]="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Message d’erreur -->
+        <div *ngIf="passwordInput.invalid && passwordInput.touched" class="text-danger small mt-1">
+          Le mot de passe doit contenir au minimum :
+          <ul class="mb-0">
+            <li>8 caractères</li>
+            <li>1 lettre majuscule</li>
+            <li>1 caractère spécial</li>
+            <li>1 chiffre</li>
+          </ul>
         </div>
       </div>
 
