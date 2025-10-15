@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  contactEmail = "infos@solsolutionac.com";
+  telephone = "222 207 952 / 678 613 290";
   
   constructor(
     private router: Router,
