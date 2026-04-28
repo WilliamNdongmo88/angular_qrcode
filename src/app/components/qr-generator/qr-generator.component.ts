@@ -85,7 +85,7 @@ export class QrGeneratorComponent implements OnInit {
     if (file && file.type.startsWith('image/')) {
       this.selectedLogo = file;
       this.errorMessage = '';
-      
+
       // Créer un aperçu de l'image
       const reader = new FileReader();
       reader.onload = (e: any) => {
@@ -134,7 +134,7 @@ export class QrGeneratorComponent implements OnInit {
         setTimeout(() => {
           this.successMessage = '';
         }, 3000);
-        
+
         // Réinitialiser le champ de fichier
         const fileInput = document.getElementById('pdfFile') as HTMLInputElement;
         if (fileInput) {
@@ -236,6 +236,10 @@ export class QrGeneratorComponent implements OnInit {
 
   goToDashboard() {
     this.router.navigate(['/user/dashboard']);
+  }
+
+  back(){
+    window.history.back();
   }
 
   reset() {

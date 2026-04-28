@@ -14,6 +14,7 @@ export interface LoginRequest {
 
 export interface UserActionDto {
   id: number;
+  qrCodeId: string;
   typeAction: string;
   timestamp: string;
   userName: string;
@@ -154,7 +155,7 @@ export class AuthService {
           localStorage.setItem('authToken', response.accessToken);
           localStorage.setItem('refreshToken', response.refreshToken);
           console.log('Roles:', response.roles[0]);
-          this.user = this.decodeToken(response.accessToken); 
+          this.user = this.decodeToken(response.accessToken);
           localStorage.setItem('username', response.nom);
           this.currentUserRole = response.roles[0];
           this.getUserProfile().subscribe(user => {
@@ -371,6 +372,22 @@ export class AuthService {
     const headers = this.getAuthHeaders();
     console.log('apiUrl : ', `${this.apiUrl}/admin/qrcodes/${qrCodeId}`);
     return this.http.delete<number>(`${this.apiUrl}/admin/qrcodes/${qrCodeId}`, { headers });
+  }
+
+  deletePdfFile(selectedActionId: number, uniquePdfId: string): Observable<number> {
+    const headers = this.getAuthHeaders();
+
+    const obj = {
+      actionId: selectedActionId
+    };
+
+    return this.http.delete<number>(
+      `${this.apiUrl}/admin/pdfs/${uniquePdfId}`,
+      {
+        headers,
+        body: obj
+      }
+    );
   }
 
   getAllQrCodes(): Observable<any[]> {

@@ -11,6 +11,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class ConfirmModalComponent {
   @Input() message: string = "Êtes-vous sûr ?";
   @Input() visible: boolean = false;
+  @Input() isRelated: boolean = false;
   @Output() confirmed = new EventEmitter<boolean>();
 
   onConfirm() {

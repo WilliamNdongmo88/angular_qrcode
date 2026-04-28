@@ -14,29 +14,29 @@
 
     <!-- Onglets -->
     <div class="tabs-container mb-4">
-      <button 
-        class="tab-button" 
+      <button
+        class="tab-button"
         [class.active]="currentTab === 'users'"
         (click)="setCurrentTab('users')"
       >
         Gestion des Utilisateurs
       </button>
-      <button 
-        class="tab-button" 
+      <button
+        class="tab-button"
         [class.active]="currentTab === 'actions'"
         (click)="setCurrentTab('actions')"
       >
         Actions des Utilisateurs
       </button>
-      <button 
-        class="tab-button" 
+      <button
+        class="tab-button"
         [class.active]="currentTab === 'qrcodes'"
         (click)="setCurrentTab('qrcodes')"
       >
         QR Codes
       </button>
-      <button 
-        class="tab-button" 
+      <button
+        class="tab-button"
         [class.active]="currentTab === ''"
         (click)="changeTemplate()"
       >
@@ -49,8 +49,8 @@
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h2 class="card-title">Gestion des Utilisateurs</h2>
-          <button 
-            class="btn btn-primary" 
+          <button
+            class="btn btn-primary"
             (click)="showCreateUserForm = !showCreateUserForm"
             *ngIf="authService.isAdmin()"
           >
@@ -63,18 +63,18 @@
           <h3>Créer un Nouvel Utilisateur</h3>
           <div class="form-group">
             <label class="form-label">Nom</label>
-            <input 
-              type="text" 
-              class="form-control" 
+            <input
+              type="text"
+              class="form-control"
               [(ngModel)]="newUser.nom"
               placeholder="Nom complet"
             >
           </div>
           <div class="form-group">
             <label class="form-label">Email</label>
-            <input 
-              type="email" 
-              class="form-control" 
+            <input
+              type="email"
+              class="form-control"
               [(ngModel)]="newUser.email"
               placeholder="adresse@email.com"
             >
@@ -99,9 +99,9 @@
 
         <!-- Filtre utilisateurs -->
         <div class="form-group">
-          <input 
-            type="text" 
-            class="form-control" 
+          <input
+            type="text"
+            class="form-control"
             [(ngModel)]="userFilter"
             placeholder="Rechercher un utilisateur..."
           >
@@ -137,9 +137,9 @@
                 <td>{{ user.dateCreation | date:'dd/MM/yyyy HH:mm' }}</td>
                 <td *ngIf="authService.isAdmin()">
                   <div class="d-flex gap-2 flex-wrap">
-                    <select 
+                    <select
                       #roleSelect
-                      class="form-control" 
+                      class="form-control"
                       [value]="user.role"
                       (change)="updateUserRole(user.id, roleSelect.value)"
                       style="width: auto; min-width: 120px;"
@@ -148,18 +148,18 @@
                       <option value="MANAGER">Manager</option>
                       <option value="ADMIN">Administrateur</option>
                     </select>
-                    <button 
-                      class="btn" 
+                    <button
+                      class="btn"
                       [class]="user.actif ? 'btn-warning' : 'btn-primary'"
-                      (click)="openModal(user.id, 'Voulez-vous vraiment ' + (user.actif ? 'désactiver' : 'activer') + ' cet utilisateur ?')"
+                      (click)="openModal(user.id, 0, 'Voulez-vous vraiment ' + (user.actif ? 'désactiver' : 'activer') + ' cet utilisateur ?')"
                     >
                     {{ user.actif  ? 'Désactiver' : 'Activer'}}
                     <!-- {{ isLoading ? 'Chargement...' : (user.actif  ? 'Désactiver' : 'Activer') }} -->
                     </button>
-                    <button 
-                      class="btn" 
+                    <button
+                      class="btn"
                       [class]="user.actif ? 'btn-primary' : 'btn-primary'"
-                      (click)="openModal(user.id, 'Vous êtes sur le point de réinitialiser le code d\'accès de cet utilisateur !')"
+                      (click)="openModal(user.id, 0,'Vous êtes sur le point de réinitialiser le code d\'accès de cet utilisateur !')"
                     >
                       Réinitialiser Code d'Accès
                     </button>
@@ -181,9 +181,9 @@
 
         <!-- Filtre actions -->
         <div class="form-group">
-          <input 
-            type="text" 
-            class="form-control" 
+          <input
+            type="text"
+            class="form-control"
             [(ngModel)]="actionFilter"
             placeholder="Rechercher une action..."
           >
@@ -198,6 +198,7 @@
                 <th>Type d'action</th>
                 <th>Description</th>
                 <th>Date</th>
+                <th *ngIf="authService.isAdmin()">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -210,6 +211,25 @@
                 </td>
                 <td>{{ action.description }}</td>
                 <td>{{ action.dateAction | date:'dd/MM/yyyy HH:mm' }}</td>
+
+                <td *ngIf="authService.isAdmin()
+                                                  && action?.uniquePdfId
+                                                  && action?.qrCodeId == null
+                                                  && action?.typeAction === 'UPLOAD_PDF'">
+                  <button *ngIf="!action.isRelatedToQrCode"
+                    class="btn btn-danger"
+                    (click)="openModal(0, action.id, 'Êtes-vous sûr de vouloir supprimer ce fichier PDF ?',
+                                      action.qrCodeId, action.uniquePdfId, action.isRelatedToQrCode)"
+                  >
+                    Supprimer
+                  </button>
+                  <button *ngIf="action.isRelatedToQrCode"
+                    class="btn btn-danger"
+                    (click)="openFalseModal('Vous ne pouvez pas supprimer ce fichier PDF car il est associé à un QR code.', action.isRelatedToQrCode)"
+                  >
+                    Supprimer
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -241,8 +261,8 @@
                 <td>
                   <div class="d-flex align-items-center gap-2">
                     <div >
-                    <img 
-                      [src]="getQrCodeImageUrl()" 
+                    <img
+                      [src]="getQrCodeImageUrl()"
                       alt="QR Code généré"
                       class="qr-image"
                     />
@@ -254,9 +274,9 @@
                 <td>{{ qrCode.qrContent | slice:0:50 }}{{ qrCode.qrContent.length > 50 ? '...' : '' }}</td>
                 <td>{{ qrCode.generationDate | date:'dd/MM/yyyy HH:mm' }}</td>
                 <td *ngIf="authService.isAdmin()">
-                  <button 
-                    class="btn btn-danger" 
-                    (click)="openModal(0, 'Êtes-vous sûr de vouloir supprimer ce QR code ?', qrCode.id)"
+                  <button
+                    class="btn btn-danger"
+                    (click)="openModal(0, 0, 'Êtes-vous sûr de vouloir supprimer ce QR code ?', qrCode.id, '')"
                   >
                     Supprimer
                   </button>
@@ -281,6 +301,7 @@
 <app-confirm-modal
   [visible]="isModalVisible"
   [message]="modalMessage"
+  [isRelated]="isRelated"
   (confirmed)="handleModalResponse($event)">
 </app-confirm-modal>
 

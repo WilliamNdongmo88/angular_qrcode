@@ -26,9 +26,10 @@ export class AdminDashboardComponent implements OnInit {
   generatedQrCode: QrCodeMetadata | null = null;
   isLoading = false;
   isUserTemplate = false;
+  isRelatedToQrCode = false;
   errorMessage = '';
   successMessage = '';
-  
+
   // Formulaire de création d'utilisateur
   showCreateUserForm = false;
   newUser = {
@@ -44,9 +45,13 @@ export class AdminDashboardComponent implements OnInit {
 
   // Modal de confirmation
   isModalVisible = false;
+  isRelated = false;
   modalMessage = '';
   selectedUserId: number | null = null;
   selectedQrcodeId: number | null = null;
+  selectedActionId: number = 0;
+  selectedPdfId: number | null = null;
+  selectedUniquePdfId: string | null = null;
 
   // Communication avec UserDashboardComponent
   isOriginalPage = true
@@ -87,7 +92,7 @@ export class AdminDashboardComponent implements OnInit {
         this.isLoading = false;
         setTimeout(() => {
           this.clearMessages();
-        }, 2000);
+        }, 5000);
       },
       error: (error) => {
         this.errorMessage = 'Erreur lors du chargement des utilisateurs';
@@ -95,7 +100,7 @@ export class AdminDashboardComponent implements OnInit {
         console.error('Erreur:', error);
         setTimeout(() => {
           this.clearMessages();
-        }, 2000);
+        }, 5000);
       }
     });
   }
@@ -118,7 +123,7 @@ export class AdminDashboardComponent implements OnInit {
         console.log('QR Codes chargés:', qrCodes);
         this.qrCodes = qrCodes;
         this.qrCodes.forEach(qrCode => {
-          this.generatedQrCode = qrCode; 
+          this.generatedQrCode = qrCode;
         });
       },
       error: (error) => {
@@ -149,7 +154,7 @@ export class AdminDashboardComponent implements OnInit {
         this.isLoading = false;
         setTimeout(() => {
           this.clearMessages();
-        }, 2000);
+        }, 5000);
       },
       error: (error) => {
         this.errorMessage = 'Erreur lors de la création de l\'utilisateur';
@@ -157,7 +162,7 @@ export class AdminDashboardComponent implements OnInit {
         console.error('Erreur:', error);
         setTimeout(() => {
           this.clearMessages();
-        }, 2000);
+        }, 5000);
       }
     });
   }
@@ -174,14 +179,14 @@ export class AdminDashboardComponent implements OnInit {
         this.isLoading = false;
         setTimeout(() => {
           this.clearMessages();
-        }, 2000);
+        }, 5000);
       },
       error: (error) => {
         this.errorMessage = 'Erreur lors de la mise à jour du rôle';
         console.error('Erreur:', error);
         setTimeout(() => {
           this.clearMessages();
-        }, 2000);
+        }, 5000);
       }
     });
   }
@@ -198,7 +203,7 @@ export class AdminDashboardComponent implements OnInit {
         this.isLoading = false;
         setTimeout(() => {
           this.clearMessages();
-        }, 2000);
+        }, 5000);
       },
       error: (error) => {
         this.errorMessage = 'Erreur lors de la mise à jour du statut';
@@ -206,7 +211,7 @@ export class AdminDashboardComponent implements OnInit {
         this.isLoading = false;
         setTimeout(() => {
           this.clearMessages();
-        }, 2000);
+        }, 5000);
       }
     });
   }
@@ -219,7 +224,7 @@ export class AdminDashboardComponent implements OnInit {
         this.isLoading = false;
         setTimeout(() => {
           this.clearMessages();
-        }, 2000);
+        }, 5000);
       },
       error: (error: any) => {
         this.errorMessage = 'Erreur lors de la réinitialisation du code d\'accès';
@@ -227,7 +232,7 @@ export class AdminDashboardComponent implements OnInit {
         this.isLoading = false;
         setTimeout(() => {
           this.clearMessages();
-        }, 2000);
+        }, 5000);
       }
     });
   }
@@ -239,14 +244,32 @@ export class AdminDashboardComponent implements OnInit {
         this.successMessage = 'QR code supprimé avec succès';
         setTimeout(() => {
           this.clearMessages();
-        }, 2000);
+        }, 5000);
       },
       error: (error) => {
         this.errorMessage = 'Erreur lors de la suppression du QR code';
         console.error('Erreur:', error);
         setTimeout(() => {
           this.clearMessages();
-        }, 2000);
+        }, 5000);
+      }
+    });
+  }
+
+  deletePdfFile(uniquePdfId: string, selectedActionId: number) {
+    this.authService.deletePdfFile(selectedActionId, uniquePdfId).subscribe({
+      next: () => {
+        this.successMessage = 'Fichier PDF supprimé avec succès';
+        setTimeout(() => {
+          this.clearMessages();
+        }, 5000);
+      },
+      error: (error) => {
+        this.errorMessage = 'Erreur lors de la suppression du fichier PDF';
+        console.error('Erreur:', error);
+        setTimeout(() => {
+          this.clearMessages();
+        }, 5000);
       }
     });
   }
@@ -292,7 +315,7 @@ export class AdminDashboardComponent implements OnInit {
 
 
   get filteredActions() {
-    return this.actions.filter(action => 
+    return this.actions.filter(action =>
       action.description?.toLowerCase().includes(this.actionFilter.toLowerCase()) ||
       action.typeAction?.toLowerCase().includes(this.actionFilter.toLowerCase())
     );
@@ -323,20 +346,33 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   // Gestion du modal de confirmation
-openModal(userId?: number, message?: string, qrcodeId?: number) {
-  this.isModalVisible = true;
-  this.modalMessage = message || '';
+  openModal(userId?: number, actionId?: number, message?: string, qrcodeId?: number, uniquePdfId?: string, isRelatedToQrCode: boolean = false) {
+    this.isModalVisible = true;
+    this.modalMessage = message || '';
 
-  if (userId && userId !== 0) {
-    this.selectedUserId = userId;
-  } else if (qrcodeId && qrcodeId !== 0) {
-    this.selectedQrcodeId = qrcodeId;
+    if (userId && userId !== 0) {
+      this.selectedUserId = userId;
+    } else if (qrcodeId && qrcodeId !== 0) {
+      this.selectedQrcodeId = qrcodeId;
+    } else if (isRelatedToQrCode) {
+      this.isRelatedToQrCode = isRelatedToQrCode;
+      console.log("Vous ne pouvez pas supprimer ce fichier PDF car il est associé à un QR code.");
+    } else if (uniquePdfId && uniquePdfId !== '' && !qrcodeId && actionId && actionId !== 0){
+      console.log("Vous etez sur le point de supprimer ce fichier PDF.");
+      this.selectedActionId = actionId;
+      this.selectedUniquePdfId = uniquePdfId;
+    }
   }
-}
+  openFalseModal(message?: string, isRelatedToQrCode: boolean = false) {
+    this.isModalVisible = true;
+    this.isRelated = isRelatedToQrCode;
+    this.modalMessage = message || '';
+  }
 
   handleModalResponse(confirmed: boolean) {
     console.log("this.selectedUserId :: ", this.selectedUserId);
     console.log("this.selectedQrcodeId :: ", this.selectedQrcodeId);
+    console.log("this.selectedUniquePdfId :: ", this.selectedUniquePdfId);
     if (confirmed && this.selectedUserId) {
       if(this.modalMessage.includes('désactiver') || this.modalMessage.includes('activer')) {
         console.log("----toggleUserStatus----");
@@ -349,6 +385,11 @@ openModal(userId?: number, message?: string, qrcodeId?: number) {
     }else if (confirmed && this.selectedQrcodeId) {
       console.log("----deleteQrCode----");
       this.deleteQrCode(this.selectedQrcodeId);
+    }else if(confirmed && this.selectedUniquePdfId && this.selectedQrcodeId==null) {
+      console.log("----deletePdfFile----");
+      console.log("this.selectedUniquePdfId :: ", this.selectedUniquePdfId);
+      console.log("this.selectedQrcodeId :: ", this.selectedQrcodeId);
+      this.deletePdfFile(this.selectedUniquePdfId, this.selectedActionId);
     }
     this.isModalVisible = false;
   }

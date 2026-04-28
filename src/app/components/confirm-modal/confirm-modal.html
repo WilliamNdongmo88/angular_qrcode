@@ -4,7 +4,7 @@
     <p>{{ message }}</p>
     <div class="modal-actions">
       <button (click)="onCancel()" class="btn btn-outline">Annuler</button>
-      <button (click)="onConfirm()" class="btn btn-danger">Confirmer</button>
+      <button *ngIf="!isRelated" (click)="onConfirm()" class="btn btn-danger">Confirmer</button>
     </div>
   </div>
 </div>

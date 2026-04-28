@@ -1,6 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  console.log('[Interceptor] Interception de la requête:', req.url);
   const token = localStorage.getItem('authToken');
 
   // 🚨 Exclure refresh-token de l’interceptor

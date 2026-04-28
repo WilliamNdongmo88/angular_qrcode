@@ -13,29 +13,29 @@
 
     <!-- Onglets -->
     <div class="tabs-container mb-4">
-      <button 
-        class="tab-button" 
+      <button
+        class="tab-button"
         [class.active]="currentTab === 'qrcodes'"
         (click)="setCurrentTab('qrcodes')"
       >
         Mes QR Codes
       </button>
-      <button 
+      <button
         class="tab-button"
         [class.active]="currentTab === 'profile'"
         (click)="setCurrentTab('profile')"
       >
         Mon Profil
       </button>
-      <button 
-        class="tab-button" 
+      <button
+        class="tab-button"
         [class.active]="currentTab === 'actions'"
         (click)="setCurrentTab('actions')"
       >
         Mon Historique
       </button>
       <button *ngIf="isOriginalPage"
-        class="tab-button" 
+        class="tab-button"
         [class.active]="currentTab === ''"
       (click)="changeTemplate()">Back</button>
     </div>
@@ -46,14 +46,14 @@
         <div class="card-header d-flex justify-content-between align-items-center">
           <h2 class="card-title">Mes QR Codes</h2>
           <div class="d-flex gap-2">
-            <button 
-              class="btn btn-success" 
+            <button
+              class="btn btn-success"
               (click)="goToQrGenerator()"
             >
               Générateur de QR Codes
             </button>
-            <button 
-              class="btn btn-primary" 
+            <button
+              class="btn btn-primary"
               (click)="showQrForm = !showQrForm"
             >
               Générer un QR Code
@@ -66,8 +66,8 @@
           <h3>Générer un Nouveau QR Code</h3>
           <div class="form-group">
             <label class="form-label">Contenu du QR Code</label>
-            <textarea 
-              class="form-control" 
+            <textarea
+              class="form-control"
               [(ngModel)]="qrContent"
               placeholder="Entrez le contenu à encoder dans le QR code (URL, texte, etc.)"
               rows="3"
@@ -89,8 +89,8 @@
           <div *ngFor="let qrCode of qrCodes" class="qr-code-card">
             <div class="qr-code-header">
                 <div class="qr-display">
-                  <img 
-                    [src]="getQrCodeImageUrl()" 
+                  <img
+                    [src]="getQrCodeImageUrl()"
                     alt="QR Code généré"
                     class="qr-image"
                   />
@@ -123,16 +123,16 @@
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h2 class="card-title">Mon Profil</h2>
-            <button 
+            <button
               *ngIf="showProfileForm && isResetPass"
-              class="btn btn-secondary" 
+              class="btn btn-secondary"
               (click)="changePassword()"
             >
               Réinitialiser le mot de passe
             </button>
-            <button 
+            <button
               *ngIf="showProfileData"
-              class="btn btn-primary" 
+              class="btn btn-primary"
               (click)="changeProfileForm()"
             >
               Modifier
@@ -174,18 +174,18 @@
           <h3>Modifier Mon Profil</h3>
           <div class="form-group">
             <label class="form-label">Nom</label>
-            <input 
-              type="text" 
-              class="form-control" 
+            <input
+              type="text"
+              class="form-control"
               [(ngModel)]="profileForm.nom"
               placeholder="Votre nom complet"
             >
           </div>
           <div class="form-group">
             <label class="form-label">Email</label>
-            <input 
-              type="email" 
-              class="form-control" 
+            <input
+              type="email"
+              class="form-control"
               [(ngModel)]="profileForm.email"
               placeholder="Votre adresse email"
               disabled="true"
